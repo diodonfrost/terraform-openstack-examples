@@ -2,7 +2,7 @@
 
 # Create instance
 #
-resource "openstack_compute_instance_v2" "instance_db" {
+resource "openstack_compute_instance_v2" "db" {
   count              = "${var.desired_capacity_db}"
   name               = "db-${count.index}"
   image_name         = "${var.image}"
@@ -10,32 +10,32 @@ resource "openstack_compute_instance_v2" "instance_db" {
   key_pair           = "${openstack_compute_keypair_v2.user_key.name}"
   user_data          = "${file("scripts/first-boot.sh")}"
   network {
-    port             = "${element(openstack_networking_port_v2.port_instance_db.*.id, count.index)}"
+    port             = "${element(openstack_networking_port_v2.db.*.id, count.index)}"
   }
 }
 
 # Create network port
-resource "openstack_networking_port_v2" "port_instance_db" {
+resource "openstack_networking_port_v2" "db" {
   count              = "${var.desired_capacity_db}"
   name               = "port-db-${count.index}"
-  network_id         = "${openstack_networking_network_v2.network_db.id}"
+  network_id         = "${openstack_networking_network_v2.generic.id}"
   admin_state_up     = true
-  security_group_ids = ["${openstack_compute_secgroup_v2.security_group_ssh.id}",
-                        "${openstack_compute_secgroup_v2.security_group_db.id}"]
+  security_group_ids = ["${openstack_compute_secgroup_v2.ssh.id}",
+                        "${openstack_compute_secgroup_v2.db.id}"]
   fixed_ip           = {
-    subnet_id        = "${openstack_networking_subnet_v2.subnet_db.id}"
+    subnet_id        = "${openstack_networking_subnet_v2.db.id}"
   }
 }
 
 # Create floating ip
-resource "openstack_networking_floatingip_v2" "floating_db" {
+resource "openstack_networking_floatingip_v2" "db" {
   count              = "${var.desired_capacity_db}"
   pool               = "${var.external_network}"
 }
 
 # Attach floating ip to instance
-resource "openstack_compute_floatingip_associate_v2" "floating_db" {
+resource "openstack_compute_floatingip_associate_v2" "db" {
   count              = "${var.desired_capacity_db}"
-  floating_ip        = "${element(openstack_networking_floatingip_v2.floating_db.*.address, count.index)}"
-  instance_id        = "${element(openstack_compute_instance_v2.instance_db.*.id, count.index)}"
+  floating_ip        = "${element(openstack_networking_floatingip_v2.db.*.address, count.index)}"
+  instance_id        = "${element(openstack_compute_instance_v2.db.*.id, count.index)}"
 }

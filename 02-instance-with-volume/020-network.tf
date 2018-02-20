@@ -2,7 +2,7 @@
 
 # Router creation
 resource "openstack_networking_router_v2" "generic" {
-  name                = "router-generic"
+  name                = "router"
   external_network_id = "${var.external_gateway}"
 }
 

@@ -1,5 +1,5 @@
 # Acces group, open input port 80 and ssh port
-resource "openstack_compute_secgroup_v2" "security_group_http" {
+resource "openstack_compute_secgroup_v2" "http" {
   name          = "http"
   description   = "Open input http port"
   rule {
@@ -11,7 +11,7 @@ resource "openstack_compute_secgroup_v2" "security_group_http" {
 }
 
 # Open mariadb port
-resource "openstack_compute_secgroup_v2" "security_group_db" {
+resource "openstack_compute_secgroup_v2" "db" {
   name          = "db"
   description   = "Open input db port"
   rule {
@@ -23,7 +23,7 @@ resource "openstack_compute_secgroup_v2" "security_group_db" {
 }
 
 # Open Apache2 port
-resource "openstack_compute_secgroup_v2" "security_group_ssh" {
+resource "openstack_compute_secgroup_v2" "ssh" {
   name          = "ssh"
   description   = "Open input ssh port"
   rule {

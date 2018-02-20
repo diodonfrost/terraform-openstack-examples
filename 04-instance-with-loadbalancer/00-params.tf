@@ -1,14 +1,8 @@
-# Configure credential OpenStack Provider
-provider "openstack" {
-  user_name   = "my-litle-user"
-  tenant_name = "my-little-tenant"
-  password    = "secret"
-  auth_url    = "http://your-cloud-prodivder.com"
-}
+# Params file for variables
 
 #### GLANCE
 variable "image" {
-  default = "centos-7"
+  default = "Centos 7"
 }
 
 #### NEUTRON
@@ -32,9 +26,8 @@ variable "flavor_http" {
 
 variable "network_http" {
   default = {
-    network_name = "network-http"
-    subnet_name  = "subnet-http"
-    cidr         = "192.168.1.0/24"
+    subnet_name = "subnet-http"
+    cidr        = "192.168.1.0/24"
   }
 }
 
@@ -49,9 +42,8 @@ variable "flavor_db" {
 
 variable "network_db" {
   default = {
-    network_name = "network-db"
-    subnet_name  = "subnet-db"
-    cidr         = "192.168.2.0/24"
+    subnet_name = "subnet-db"
+    cidr        = "192.168.2.0/24"
   }
 }
 

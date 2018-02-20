@@ -1,20 +1,22 @@
-# Utilisation
+# How to
 
-![schéma d'infrastructure pool-with-multiple-network](img/pool-with-multiple-network.png "schéma d'infrastructure pool-with-multiple-network")
+![infra instance with multiple network](../img/03-multiple-network.png "infra instance with multiple network")
 
-### Création de l'infrastructure
+### Create stack
 
 ```
 terraform apply
 ```
 
-Ce script créera:
-  - 1 routeur
-  - 2 network
-  - 2 instances http
-  - 1 pool avec entre 1 et 3 instances
+This script will create:
+-   1 router
+-   2 networks
+-   2 http instances
+-   3 db instances
 
-### Suppresion de l'infrastructure
+The number of db instance will be define with Terraform "count" parameters
+
+### Delete stack
 
 ```
 terraform destroy
