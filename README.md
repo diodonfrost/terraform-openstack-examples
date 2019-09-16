@@ -3,7 +3,7 @@
 Terraform is a tool for building, changing, and versioning infrastructure safely and efficiently. Terraform can manage existing and popular service providers as well as custom in-house solutions.
 
 Version used:
-*   Terraform 0.11.2
+*   Terraform 0.12.8
 
 ## Openstack authentification
 The OpenStack provider is used to interact with the many resources supported by OpenStack. The provider needs to be configured with the proper credentials before it can be used.

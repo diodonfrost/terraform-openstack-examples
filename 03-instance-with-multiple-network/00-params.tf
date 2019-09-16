@@ -52,3 +52,4 @@ variable "network_db" {
 variable "desired_capacity_db" {
   default = 3
 }
+
