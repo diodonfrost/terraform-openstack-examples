@@ -30,6 +30,7 @@ variable "network_http" {
     cidr        = "192.168.1.0/24"
   }
 }
+
 #### MAIN DISK SIZE FOR HTTP
 variable "volume_http" {
   default = 10
@@ -44,3 +45,4 @@ variable "flavor_db" {
 variable "volume_db" {
   default = 15
 }
+

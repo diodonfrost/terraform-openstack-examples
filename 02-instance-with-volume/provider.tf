@@ -5,3 +5,4 @@ provider "openstack" {
   password    = "secret"
   auth_url    = "http://your-cloud-prodivder.com"
 }
+
