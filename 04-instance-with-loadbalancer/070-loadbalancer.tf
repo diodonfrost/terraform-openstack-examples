@@ -27,11 +27,8 @@ resource "openstack_lb_pool_v2" "http" {
 
 # Add multip instances to pool
 resource "openstack_lb_member_v2" "http" {
-  count = var.desired_capacity_http
-  address = element(
-    openstack_compute_instance_v2.http.*.access_ip_v4,
-    count.index,
-  )
+  for_each      = var.http_instance_names
+  address       = openstack_compute_instance_v2.http[each.key].access_ip_v4
   protocol_port = 80
   pool_id       = openstack_lb_pool_v2.http.id
   subnet_id     = openstack_networking_subnet_v2.http.id
@@ -78,8 +75,8 @@ resource "openstack_lb_pool_v2" "db" {
 
 # Add multip instances to pool
 resource "openstack_lb_member_v2" "db" {
-  count         = var.desired_capacity_db
-  address       = element(openstack_compute_instance_v2.db.*.access_ip_v4, count.index)
+  for_each      = var.db_instance_names
+  address       = openstack_compute_instance_v2.db[each.key].access_ip_v4
   protocol_port = 3306
   pool_id       = openstack_lb_pool_v2.db.id
   subnet_id     = openstack_networking_subnet_v2.db.id

@@ -37,9 +37,11 @@ variable "network_http" {
   }
 }
 
-variable "desired_capacity_http" {
-  type    = number
-  default = 2
+variable "http_instance_names" {
+  type    = set(string)
+  default = ["http-instance-1",
+             "http-instance-2",
+             "http-instance-3"]
 }
 
 #### VM DB parameters ####
@@ -56,8 +58,9 @@ variable "network_db" {
   }
 }
 
-variable "desired_capacity_db" {
-  type    = number
-  default = 3
+variable "db_instance_names" {
+  type    = set(string)
+  default = ["db-instance-1",
+             "db-instance-2",
+             "db-instance-3"]
 }
-
