@@ -1,0 +1,40 @@
+name: ci
+
+on:
+  push:
+  pull_request: 
+  schedule:
+    - cron: '0 18 * * sun'
+
+jobs:
+  build:
+    name: terraform ${{ matrix.terraform_version }} fmt
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        terraform_version:
+          - latest
+          - 0.13.0
+          - 0.12.0
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install Terraform
+        run: |
+          sudo pip install ansible
+          sudo ansible-galaxy install diodonfrost.terraform && sudo ln -s /root/.ansible/roles/diodonfrost.terraform /root/.ansible/roles/ansible-role-terraform
+          sudo ansible-pull -U https://github.com/diodonfrost/ansible-role-terraform tests/test.yml -e "terraform_version=${{ matrix.terraform_version }}"
+          terraform -version
+
+      - name: Terraform fmt
+        run: |
+          set -e
+          terraform fmt -check -diff -recursive
