@@ -3,7 +3,7 @@
 #### GLANCE
 variable "image" {
   type    = string
-  default = "Centos 7"
+  default = "Centos 8"
 }
 
 #### NEUTRON
