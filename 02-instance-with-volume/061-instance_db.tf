@@ -19,8 +19,8 @@ resource "openstack_networking_port_v2" "db" {
   network_id     = openstack_networking_network_v2.generic.id
   admin_state_up = true
   security_group_ids = [
-    openstack_compute_secgroup_v2.ssh.id,
-    openstack_compute_secgroup_v2.db.id,
+    openstack_networking_secgroup_v2.ssh.id,
+    openstack_networking_secgroup_v2.db.id,
   ]
   fixed_ip {
     subnet_id = openstack_networking_subnet_v2.http.id
@@ -33,15 +33,15 @@ resource "openstack_networking_floatingip_v2" "db" {
 }
 
 # Attach floating ip to instance
-resource "openstack_compute_floatingip_associate_v2" "db" {
+resource "openstack_networking_floatingip_associate_v2" "db" {
   floating_ip = openstack_networking_floatingip_v2.db.address
-  instance_id = openstack_compute_instance_v2.db.id
+  port_id     = openstack_networking_port_v2.db.id
 }
 
 #### VOLUME MANAGEMENT ####
 
 # Create volume
-resource "openstack_blockstorage_volume_v2" "db" {
+resource "openstack_blockstorage_volume_v3" "db" {
   name = "volume-db"
   size = var.volume_db
 }
@@ -49,6 +49,5 @@ resource "openstack_blockstorage_volume_v2" "db" {
 # Attach volume to instance instance db
 resource "openstack_compute_volume_attach_v2" "db" {
   instance_id = openstack_compute_instance_v2.db.id
-  volume_id   = openstack_blockstorage_volume_v2.db.id
+  volume_id   = openstack_blockstorage_volume_v3.db.id
 }
-

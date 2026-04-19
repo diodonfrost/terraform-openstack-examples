@@ -21,8 +21,8 @@ resource "openstack_networking_port_v2" "db" {
   network_id     = openstack_networking_network_v2.generic.id
   admin_state_up = true
   security_group_ids = [
-    openstack_compute_secgroup_v2.ssh.id,
-    openstack_compute_secgroup_v2.db.id,
+    openstack_networking_secgroup_v2.ssh.id,
+    openstack_networking_secgroup_v2.db.id,
   ]
   fixed_ip {
     subnet_id = openstack_networking_subnet_v2.db.id
@@ -36,8 +36,8 @@ resource "openstack_networking_floatingip_v2" "db" {
 }
 
 # Attach floating ip to instance
-resource "openstack_compute_floatingip_associate_v2" "db" {
+resource "openstack_networking_floatingip_associate_v2" "db" {
   for_each    = var.db_instance_names
   floating_ip = openstack_networking_floatingip_v2.db[each.key].address
-  instance_id = openstack_compute_instance_v2.db[each.key].id
+  port_id     = openstack_networking_port_v2.db[each.key].id
 }
